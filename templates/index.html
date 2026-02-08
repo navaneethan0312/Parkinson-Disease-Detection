@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parkinson’s Disease Detection System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e3f2fd, #ffffff);
+        }
+
+        header {
+            background: #0d47a1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0d47a1;
+        }
+
+        .btn {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        button {
+            background: #0d47a1;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #08306b;
+        }
+
+        .result {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .healthy { color: green; }
+        .unhealthy { color: red; }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Parkinson’s Disease Detection System</h1>
+    <p>Machine Learning Based Medical Prediction</p>
+</header>
+
+<div class="container">
+    <h2>Patient Voice Feature Input</h2>
+
+    <form method="POST">
+        <div class="grid">
+            {% set features = [
+            "MDVP:Fo(Hz)", "MDVP:Fhi(Hz)", "MDVP:Flo(Hz)", "MDVP:Jitter(%)",
+            "MDVP:Jitter(Abs)", "MDVP:RAP", "MDVP:PPQ", "Jitter:DDP",
+            "MDVP:Shimmer", "MDVP:Shimmer(dB)", "Shimmer:APQ3", "Shimmer:APQ5",
+            "MDVP:APQ", "Shimmer:DDA", "NHR", "HNR", "RPDE", "DFA",
+            "spread1", "spread2", "D2", "PPE"
+            ] %}
+
+            {% for f in features %}
+            <div class="field">
+                <label>{{ f }}</label>
+                <input type="number" step="any" name="feature{{ loop.index }}" required>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="btn">
+            <button type="submit">Predict Result</button>
+        </div>
+    </form>
+
+    {% if prediction %}
+        <div class="result {% if 'Healthy' in prediction %}healthy{% else %}unhealthy{% endif %}">
+            {{ prediction }}
+        </div>
+    {% endif %}
+</div>
+
+<footer>
+    © 2026 Parkinson Disease Detection | ML Project
+</footer>
+
+</body>
+</html>
