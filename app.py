@@ -4,7 +4,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load model AND scaler
+# Load model and scaler
 model = joblib.load("parkinson_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
@@ -14,17 +14,18 @@ def index():
 
     if request.method == 'POST':
         try:
-            # Read 22 inputs
+            # Read 22 input features
             data = [float(request.form[f'feature{i}']) for i in range(1, 23)]
+
             data = np.array([data])
 
-            # 🔥 SCALE INPUT (THIS WAS MISSING BEFORE)
+            # Scale the data
             data_scaled = scaler.transform(data)
 
             result = model.predict(data_scaled)
 
             if result[0] == 1:
-                prediction = "Parkinson’s Disease Detected"
+                prediction = "Parkinson's Disease Detected"
             else:
                 prediction = "Healthy"
 
@@ -33,6 +34,6 @@ def index():
 
     return render_template("index.html", prediction=prediction)
 
+
 if __name__ == "__main__":
     app.run(debug=True)
-
